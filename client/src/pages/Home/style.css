@@ -36,8 +36,8 @@ h4 {
   color: white;
 }
 
-#addNew {
-  background-color: var(--althighlight);
+.btn.addNew {
+  background-color: var(--althighlight) !important;
   /* color: white; */
 }
 
@@ -47,4 +47,15 @@ h4 {
 
 .dbLoo:hover {
   background-color: var(--highlight) !important;
+}
+
+.btn-lg {
+  margin: auto;
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+
+.btn {
+  background-color: var(--accent);
+  color: var(--white)
 }

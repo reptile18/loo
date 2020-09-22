@@ -170,8 +170,8 @@ function Home(props) {
             <div className="row">
               {/* <a href="/search" className="btn btn-warning btn-lg active" role="button" aria-pressed="true" id="addNew"><i
                 className="fas fa-plus"></i> New Loo</a> */}
-              <Link to={newLooDestination()} className="btn btn-warning btn-lg active"><i
-                className="fas fa-plus"></i>New Loo</Link>
+              <Link to={newLooDestination()} className="addNew btn btn-warning btn-lg active"><i
+                className="fas fa-plus"></i> New Loo</Link>
             </div>
             <div id="mapsource" data-source="home"></div>
           </div>
