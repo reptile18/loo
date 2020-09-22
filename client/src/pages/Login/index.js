@@ -25,6 +25,20 @@ function Login() {
     loginUser();
   }
 
+  function destination() {
+    const destination = new URLSearchParams(location.search).get("destination");
+    if (destination !== "") {
+      return `?destination=${destination}`;
+    }
+    else {
+      return "";
+    }
+  }
+
+  function signupLink() {
+    return `/signup${destination()}`;
+  }
+
   // const handleFormSubmit = event => {
   //   // When the form is submitted, prevent its default behavior, get recipes update the recipes state
   //   event.preventDefault();
@@ -111,7 +125,7 @@ function Login() {
             </label>
           </form>
           <br />
-          <p>Or sign up <Link to="/signup" role="button" className="btn-link">here</Link>
+          <p>Or sign up <Link to={signupLink()} role="button" className="btn-link">here</Link>
           </p>
         </div>
       </div>
