@@ -1,0 +1,1 @@
+echo "REACT_APP_MAPS_API_KEY=$MAPS_API_KEY" > .env
