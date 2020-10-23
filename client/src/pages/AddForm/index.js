@@ -1,15 +1,20 @@
-import React, { useState } from "react";
-import { useHistory, useParams } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useHistory, useParams, Redirect } from "react-router-dom";
 import RangeSlider from "react-bootstrap-range-slider";
 import axios from "axios";
 import "./style.css";
+import Home from '../Home';
+
 
 function AddForm(props) {
-  console.log(props);
+  console.log("in addform, props: ", props.location.place);
+  const [selectedLoo, setSelectedLoo] = useState(props.location.place.name);
+  const [photo, setPhoto] = useState("");
   let { id } = useParams();
+  // const [redirect, setRedirect] = useState(false);
+  // const [redirectTo, setRedirectTo] = useState("");
 
   const [loo, setLoo] = useState({
-    // should be props.place_id but need to work on passing that info down
     place_id: id,
     isAvailable: true,
     needsKey: false,
@@ -22,7 +27,18 @@ function AddForm(props) {
     cleanRating: 5
   });
 
-  // const history = useHistory();
+  useEffect(() => {
+    loadPhoto();
+  }, []);
+
+  function loadPhoto() {
+    const photoReference = selectedLoo.photos[0].photo_reference;
+    axios.get(`/api/photo/${photoReference}`)
+      .then((photoSrc) => {
+        setPhoto(photoSrc.data);
+      })
+      .catch((err) => console.log(err));
+  }
 
   function updateCleanValue(evt) {
     const numberRating = parseInt(evt.target.value);
@@ -37,6 +53,8 @@ function AddForm(props) {
         alert("Thanks for adding a loo!");
 
         props.history.push("/");
+        // setRedirectTo("/");
+        // setRedirect(true);
       })
       .catch((err) => {
         console.log(err);
@@ -55,15 +73,17 @@ function AddForm(props) {
 
               <div className="row">
                 <div className="col-lg order-md-12 order-lg-1">
-                  <div className="img-placeholder" />
+                  <div className="img-placeholder">
+                    <img src={photo} id="place_img" alt={selectedLoo.name} class="detailsPlaceImg" />
+                  </div>
                 </div>
                 <div className="col-lg order-md order-lg-12">
                   <p className="placeAddress">
-                    <h1 className="locationName">Place Name</h1>
+                    <h1 className="locationName">{selectedLoo.name}</h1>
                     <p>
-                      <span className="streetAddress">Place Address</span>
+                      <span className="streetAddress">{selectedLoo.formatted_address}</span>
                       <br />
-                      <span className="placePhone">Phone</span>
+                      {/* <span className="placeOpen">{if (selectedLoo.opening_hours.open_now) {}}</span> */}
                     </p>
                   </p>
                 </div>
@@ -235,6 +255,7 @@ function AddForm(props) {
           </div>
         </div>
       </div>
+      {/* { redirect === true ?  <Redirect to="/" /> : null} */}
     </div>
   );
 }
