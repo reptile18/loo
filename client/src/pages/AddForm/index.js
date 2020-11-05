@@ -4,11 +4,12 @@ import RangeSlider from "react-bootstrap-range-slider";
 import axios from "axios";
 import "./style.css";
 import Home from '../Home';
+import Logo from "../../assets/img/favicon-teal.png";
 
 
 function AddForm(props) {
   console.log("in addform, props: ", props.location.place);
-  const [selectedLoo, setSelectedLoo] = useState(props.location.place.name);
+  const [selectedLoo, setSelectedLoo] = useState(props.location.place);
   const [photo, setPhoto] = useState("");
   let { id } = useParams();
   // const [redirect, setRedirect] = useState(false);
@@ -16,15 +17,16 @@ function AddForm(props) {
 
   const [loo, setLoo] = useState({
     place_id: id,
-    isAvailable: true,
-    needsKey: false,
-    genderNeutral: false,
-    isAccessible: false,
-    hasWater: true,
-    hasSoap: true,
-    hasPaper: true,
-    hasMirror: true,
-    cleanRating: 5
+    location_name: selectedLoo.name,
+    available: true,
+    needs_key: false,
+    gender_neutral: false,
+    handicap_accessible: false,
+    has_water: true,
+    has_soap: true,
+    has_paper: true,
+    has_mirror: true,
+    clean_rating: 5
   });
 
   useEffect(() => {
@@ -32,17 +34,22 @@ function AddForm(props) {
   }, []);
 
   function loadPhoto() {
-    const photoReference = selectedLoo.photos[0].photo_reference;
-    axios.get(`/api/photo/${photoReference}`)
-      .then((photoSrc) => {
-        setPhoto(photoSrc.data);
-      })
-      .catch((err) => console.log(err));
+    if (!selectedLoo.photos) {
+      setPhoto(Logo);
+    }
+    else if (selectedLoo.photos) {
+      const photoReference = selectedLoo.photos[0].photo_reference;
+      axios.get(`/api/photo/${photoReference}`)
+        .then((photoSrc) => {
+          setPhoto(photoSrc.data);
+        })
+        .catch((err) => console.log(err));
+    }
   }
 
   function updateCleanValue(evt) {
     const numberRating = parseInt(evt.target.value);
-    setLoo({ ...loo, cleanRating: numberRating });
+    setLoo({ ...loo, clean_rating: numberRating });
   }
 
   function submitLoo() {
@@ -73,8 +80,8 @@ function AddForm(props) {
 
               <div className="row">
                 <div className="col-lg order-md-12 order-lg-1">
-                  <div className="img-placeholder">
-                    <img src={photo} id="place_img" alt={selectedLoo.name} class="detailsPlaceImg" />
+                  <div className="img-placeholder justify-content-center">
+                    <img src={photo} id="place_img" alt={selectedLoo.name} className="detailsPlaceImg img-thumbnail" />
                   </div>
                 </div>
                 <div className="col-lg order-md order-lg-12">
@@ -101,13 +108,13 @@ function AddForm(props) {
                           <input
                             type="checkbox"
                             className="custom-control-input"
-                            id="isAvailable"
+                            id="available"
                             defaultChecked
-                            onChange={() => setLoo(({ isAvailable }) => ({ ...loo, isAvailable: !isAvailable }))}
+                            onChange={() => setLoo(({ available }) => ({ ...loo, available: !available }))}
                           />
                           <label
                             className="custom-control-label"
-                            for="isAvailable"
+                            for="available"
                           >
                             Loo available
                           </label>
@@ -116,13 +123,13 @@ function AddForm(props) {
                           <input
                             type="checkbox"
                             className="custom-control-input"
-                            id="needsKey"
-                            value={loo.needsKey}
-                            onChange={() => setLoo(({ needsKey }) => ({ ...loo, needsKey: !needsKey }))}
+                            id="needs_key"
+                            value={loo.needs_key}
+                            onChange={() => setLoo(({ needs_key }) => ({ ...loo, needs_key: !needs_key }))}
                           />
                           <label
                             className="custom-control-label"
-                            for="needsKey"
+                            for="needs_key"
                           >
                             Loo needs key
                           </label>
@@ -142,7 +149,7 @@ function AddForm(props) {
                             type="checkbox"
                             className="custom-control-input"
                             id="accessible"
-                            onChange={() => setLoo(({ isAccessible }) => ({ ...loo, isAccessible: !isAccessible }))}
+                            onChange={() => setLoo(({ handicap_accessible }) => ({ ...loo, handicap_accessible: !handicap_accessible }))}
                           />
                           <label
                             className="custom-control-label"
@@ -158,13 +165,13 @@ function AddForm(props) {
                           <input
                             type="checkbox"
                             className="custom-control-input"
-                            id="hasWater"
+                            id="has_water"
                             defaultChecked
-                            onChange={() => setLoo(({ hasWater }) => ({ ...loo, hasWater: !hasWater }))}
+                            onChange={() => setLoo(({ has_water }) => ({ ...loo, has_water: !has_water }))}
                           />
                           <label
                             className="custom-control-label"
-                            for="hasWater"
+                            for="has_water"
                           >
                             Has water
                           </label>
@@ -173,11 +180,11 @@ function AddForm(props) {
                           <input
                             type="checkbox"
                             className="custom-control-input"
-                            id="hasSoap"
+                            id="has_soap"
                             defaultChecked
-                            onChange={() => setLoo(({ hasSoap }) => ({ ...loo, hasSoap: !hasSoap }))}
+                            onChange={() => setLoo(({ has_soap }) => ({ ...loo, has_soap: !has_soap }))}
                           />
-                          <label className="custom-control-label" for="hasSoap">
+                          <label className="custom-control-label" for="has_soap">
                             Has soap
                           </label>
                         </div>
@@ -185,13 +192,13 @@ function AddForm(props) {
                           <input
                             type="checkbox"
                             className="custom-control-input"
-                            id="hasPaper"
+                            id="has_paper"
                             defaultChecked
-                            onChange={() => setLoo(({ hasPaper }) => ({ ...loo, hasPaper: !hasPaper }))}
+                            onChange={() => setLoo(({ has_paper }) => ({ ...loo, has_paper: !has_paper }))}
                           />
                           <label
                             className="custom-control-label"
-                            for="hasPaper"
+                            for="has_paper"
                           >
                             Has toilet paper
                           </label>
@@ -200,13 +207,13 @@ function AddForm(props) {
                           <input
                             type="checkbox"
                             className="custom-control-input"
-                            id="hasMirror"
+                            id="has_mirror"
                             defaultChecked
-                            onChange={() => setLoo(({ hasMirror }) => ({ ...loo, hasMirror: !hasMirror }))}
+                            onChange={() => setLoo(({ has_mirror }) => ({ ...loo, has_mirror: !has_mirror }))}
                           />
                           <label
                             className="custom-control-label"
-                            for="hasMirror"
+                            for="has_mirror"
                           >
                             Has mirror
                           </label>
@@ -229,7 +236,7 @@ function AddForm(props) {
                               max={10}
                               tooltip="off"
                               size="lg"
-                              value={loo.cleanRating}
+                              value={loo.clean_rating}
                               onChange={updateCleanValue} 
                               className="slider"
                             />

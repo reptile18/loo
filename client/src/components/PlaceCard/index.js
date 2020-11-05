@@ -17,9 +17,7 @@ function PlaceCard(props) {
           </Link> */}
           <Link to={{
             pathname: `/add/${place.place_id}`,
-            place: {
-              name: place
-            }
+            place: place
           }}>
             <button type="button" className="btn btn-primary stretched-link clearfix mt-auto">Add Loo Info</button>
           </Link>
