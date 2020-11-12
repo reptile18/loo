@@ -54,16 +54,18 @@ function AddForm(props) {
     setLoo({ ...loo, clean_rating: numberRating });
   }
 
-  function submitLoo() {
+  function submitLoo(e) {
+    e.preventDefault();
     axios.post("/api/bathroom", loo)
       .then(() => {
         console.log("loo successfully added");
 
         alert("Thanks for adding a loo!");
 
-        props.history.push("/");
+        //props.history.push("/");
         // setRedirectTo("/");
-        // setRedirect(true);
+        console.log("redirecting to home");
+        setRedirect(true);
       })
       .catch((err) => {
         console.log(err);
