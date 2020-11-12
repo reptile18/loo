@@ -12,12 +12,13 @@ function AddForm(props) {
   const [selectedLoo, setSelectedLoo] = useState(props.location.place);
   const [photo, setPhoto] = useState("");
   let { id } = useParams();
-  // const [redirect, setRedirect] = useState(false);
+  const [redirect, setRedirect] = useState(false);
   // const [redirectTo, setRedirectTo] = useState("");
 
   const [loo, setLoo] = useState({
     place_id: id,
-    location_name: selectedLoo.name,
+    location_name: selectedLoo?.name,
+    street_address: selectedLoo?.formatted_address,
     available: true,
     needs_key: false,
     gender_neutral: false,
@@ -34,6 +35,7 @@ function AddForm(props) {
   }, []);
 
   function loadPhoto() {
+    if (!selectedLoo) return;
     if (!selectedLoo.photos) {
       setPhoto(Logo);
     }
@@ -81,14 +83,14 @@ function AddForm(props) {
               <div className="row">
                 <div className="col-lg order-md-12 order-lg-1">
                   <div className="img-placeholder justify-content-center">
-                    <img src={photo} id="place_img" alt={selectedLoo.name} className="detailsPlaceImg img-thumbnail" />
+                    <img src={photo} id="place_img" alt={loo.location_name} className="detailsPlaceImg img-thumbnail" />
                   </div>
                 </div>
                 <div className="col-lg order-md order-lg-12">
                   <p className="placeAddress">
-                    <h1 className="locationName">{selectedLoo.name}</h1>
+                    <h1 className="locationName">{loo.location_name}</h1>
                     <p>
-                      <span className="streetAddress">{selectedLoo.formatted_address}</span>
+                      <span className="streetAddress">{loo.street_address}</span>
                       <br />
                       {/* <span className="placeOpen">{if (selectedLoo.opening_hours.open_now) {}}</span> */}
                     </p>
@@ -262,7 +264,7 @@ function AddForm(props) {
           </div>
         </div>
       </div>
-      {/* { redirect === true ?  <Redirect to="/" /> : null} */}
+      { redirect === true ?  <Redirect to="/" /> : null } 
     </div>
   );
 }
