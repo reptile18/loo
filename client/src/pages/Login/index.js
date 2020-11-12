@@ -79,8 +79,10 @@ function Login() {
         const destination = new URLSearchParams(location.search).get("destination");
 
         if (destination) {
+          console.log("in Login form, redirecting to ", destination);
           setRedirectTo("/" + destination);
         } else {
+          console.log("in Login form, redirecting to home");
           setRedirectTo("/");
         }
         setRedirect(true);

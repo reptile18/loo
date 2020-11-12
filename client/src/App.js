@@ -23,7 +23,7 @@ function App() {
             <Route path="/logout" exact component={Logout} />
             <Route path="/signup" exact component={Signup} />
             {/* <Route path="/details" exact component={Details} /> */}
-            <Route path="/add/:id" component={AddForm} />
+            <Route path="/add/:id" exact component={AddForm} />
           </Switch>
         </StoreProvider>
       </Router>
